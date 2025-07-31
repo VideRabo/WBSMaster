@@ -111,11 +111,11 @@ export default function WbsSidebar({ selectedNode, onNodeUpdate }: WbsSidebarPro
         {selectedNode ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="nodeName" className="text-sm font-medium text-gray-700 mb-2">
+              <Label htmlFor="nodeNameInput" className="text-sm font-medium text-gray-700 mb-2">
                 Node Name
               </Label>
               <Input
-                id="nodeName"
+                id="nodeNameInput"
                 type="text"
                 placeholder="Enter node name..."
                 value={formData.name}
