@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { WbsNodeWithChildren } from "@shared/schema";
 import WbsHeader from "@/components/wbs-header";
 import WbsSidebar from "@/components/wbs-sidebar";
-import WbsTree from "@/components/wbs-tree";
+import SimpleWbsTree from "@/components/simple-wbs-tree";
 import ExportModal from "@/components/export-modal";
 import ContextMenu from "@/components/context-menu";
 import { useToast } from "@/hooks/use-toast";
@@ -126,7 +126,7 @@ export default function WbsBuilder() {
         />
         
         <main className="flex-1 overflow-hidden">
-          <WbsTree 
+          <SimpleWbsTree 
             nodes={wbsTree || []}
             selectedNodeId={selectedNodeId}
             onSelectNode={setSelectedNodeId}
