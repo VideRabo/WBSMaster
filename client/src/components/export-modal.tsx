@@ -28,16 +28,31 @@ export default function ExportModal({ open, onClose }: ExportModalProps) {
         throw new Error('Export canvas not found');
       }
 
-      // Dynamic import of html2canvas to avoid SSR issues
-      const html2canvas = (await import('html2canvas')).default;
+      // Temporarily disable html2canvas to isolate DOM issues
+      // const html2canvas = (await import('html2canvas')).default;
       
-      // Configure export options
+      // For now, create a simple fallback export
+      toast({
+        title: "Export Feature Temporarily Disabled",
+        description: "Working on fixing export functionality. Please try again later.",
+      });
+      onClose();
+      return;
+      
+      // Configure export options with better DOM handling
       const options = {
         backgroundColor: '#ffffff',
         scale: size === '4k' ? 2 : size === 'hd' ? 1.5 : 1,
         useCORS: true,
         allowTaint: true,
-        foreignObjectRendering: true,
+        foreignObjectRendering: false, // Disable to avoid DOM conflicts
+        ignoreElements: (element: Element) => {
+          // Ignore elements that might cause issues
+          return element.tagName === 'SCRIPT' || 
+                 element.tagName === 'STYLE' ||
+                 element.classList?.contains('context-menu') ||
+                 element.classList?.contains('tooltip');
+        },
       };
 
       // Capture the canvas

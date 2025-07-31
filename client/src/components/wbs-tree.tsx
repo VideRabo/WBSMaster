@@ -110,19 +110,17 @@ function WbsNode({ node, selectedNodeId, onSelectNode, onContextMenu, level }: W
         </div>
         
         {/* Context Menu Button */}
-        <button 
-          className={`
-            absolute -top-2 -right-2 w-6 h-6 bg-white text-gray-600 rounded-full shadow-md 
-            transition-opacity text-xs hover:bg-gray-50
-            ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
-          `}
-          onClick={(e) => {
-            e.stopPropagation();
-            onContextMenu(e, node.id);
-          }}
-        >
-          <MoreVertical size={12} />
-        </button>
+        {isSelected && (
+          <button 
+            className="absolute -top-2 -right-2 w-6 h-6 bg-white text-gray-600 rounded-full shadow-md text-xs hover:bg-gray-50"
+            onClick={(e) => {
+              e.stopPropagation();
+              onContextMenu(e, node.id);
+            }}
+          >
+            <MoreVertical size={12} />
+          </button>
+        )}
       </div>
       
       {/* Connection Line and Children */}
