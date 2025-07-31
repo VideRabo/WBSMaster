@@ -68,15 +68,16 @@ const getNodeColors = (level: number, isSelected: boolean) => {
 
 interface WbsNodeProps {
   node: WbsNodeWithChildren;
-  isSelected: boolean;
-  onSelect: () => void;
-  onContextMenu: (e: React.MouseEvent) => void;
+  selectedNodeId: string | null;
+  onSelectNode: (nodeId: string) => void;
+  onContextMenu: (e: React.MouseEvent, nodeId: string) => void;
   level: number;
 }
 
-function WbsNode({ node, isSelected, onSelect, onContextMenu, level }: WbsNodeProps) {
+function WbsNode({ node, selectedNodeId, onSelectNode, onContextMenu, level }: WbsNodeProps) {
   const [isExpanded, setIsExpanded] = useState(node.expanded === 1);
   const Icon = getNodeIcon(node.name, level);
+  const isSelected = selectedNodeId === node.id;
   const colors = getNodeColors(level, isSelected);
   
   const hasChildren = node.children && node.children.length > 0;
@@ -91,8 +92,8 @@ function WbsNode({ node, isSelected, onSelect, onContextMenu, level }: WbsNodePr
           ${level === 0 ? 'px-6 py-4 shadow-lg' : level === 1 ? 'px-4 py-3 shadow-md' : 'px-3 py-2 text-sm'}
           ${isSelected ? 'ring-2 ring-primary ring-offset-2' : ''}
         `}
-        onClick={onSelect}
-        onContextMenu={onContextMenu}
+        onClick={() => onSelectNode(node.id)}
+        onContextMenu={(e) => onContextMenu(e, node.id)}
       >
         <div className="flex items-center space-x-2">
           <Icon size={level === 0 ? 20 : level === 1 ? 18 : 16} />
@@ -117,7 +118,7 @@ function WbsNode({ node, isSelected, onSelect, onContextMenu, level }: WbsNodePr
           `}
           onClick={(e) => {
             e.stopPropagation();
-            onContextMenu(e);
+            onContextMenu(e, node.id);
           }}
         >
           <MoreVertical size={12} />
@@ -146,8 +147,8 @@ function WbsNode({ node, isSelected, onSelect, onContextMenu, level }: WbsNodePr
                 <WbsNode
                   key={child.id}
                   node={child}
-                  isSelected={isSelected}
-                  onSelect={onSelect}
+                  selectedNodeId={selectedNodeId}
+                  onSelectNode={onSelectNode}
                   onContextMenu={onContextMenu}
                   level={level + 1}
                 />
@@ -179,9 +180,9 @@ export default function WbsTree({
       <WbsNode
         key={node.id}
         node={node}
-        isSelected={selectedNodeId === node.id}
-        onSelect={() => onSelectNode(node.id)}
-        onContextMenu={(e) => onContextMenu(e, node.id)}
+        selectedNodeId={selectedNodeId}
+        onSelectNode={onSelectNode}
+        onContextMenu={onContextMenu}
         level={level}
       />
     );

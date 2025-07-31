@@ -185,7 +185,12 @@ export class MemStorage implements IStorage {
       id,
       expanded: insertNode.expanded ?? 1,
       level: insertNode.level ?? 0,
-      metadata: insertNode.metadata ?? {}
+      metadata: insertNode.metadata ?? {},
+      duration: insertNode.duration ?? null,
+      description: insertNode.description ?? null,
+      effort: insertNode.effort ?? null,
+      responsible: insertNode.responsible ?? null,
+      parentId: insertNode.parentId ?? null
     };
     this.wbsNodes.set(id, node);
     return node;
